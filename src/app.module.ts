@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { FundingPaymentResolver } from './graphql/funding-payment.resolver';
+import { Module } from "@nestjs/common";
+import { GraphQLModule } from "@nestjs/graphql";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { FundingPaymentResolver } from "./graphql/funding-payment.resolver";
 
 @Module({
   imports: [
@@ -10,6 +10,7 @@ import { FundingPaymentResolver } from './graphql/funding-payment.resolver';
       useFactory: async () => ({
         autoSchemaFile: true,
         playground: true,
+        introspection: true,
       }),
     }),
   ],
