@@ -1,27 +1,28 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { FundingPayment } from './funding-payment.type';
-import { uuid } from 'uuidv4';
+import { Args, Query, Resolver } from "@nestjs/graphql";
+import { FundingPayment } from "./funding-payment.type";
+import { uuid } from "uuidv4";
 
 @Resolver(() => FundingPayment)
 export class FundingPaymentResolver {
   constructor() {}
 
   @Query(() => [FundingPayment], {
-    name: 'fundingpayments',
+    name: "fundingpayments",
   })
   async getFundingPayments(
-    @Args('count', {
+    @Args("count", {
       type: () => Number,
-      description: 'The number of items to generate and return.',
+      description: "The number of items to generate and return.",
       nullable: false,
     })
-    count: Number,
+    count: Number
   ): Promise<FundingPayment[]> {
     const payments: FundingPayment[] = [];
 
     for (let i = 0; i < count; i++) {
       payments.push({
         id: uuid(),
+        version: this.getRandomNumber(5),
         correspondent_id: uuid(),
         tracker_payment_id: uuid(),
         status: this.getRandomStatus(),
@@ -45,11 +46,11 @@ export class FundingPaymentResolver {
 
   getRandomStatus(): string {
     const r = this.getRandomNumber(2);
-    return r == 0 ? 'IN_TRANSIT' : 'SETTLED';
+    return r == 0 ? "IN_TRANSIT" : "SETTLED";
   }
 
   getRandomCurrencyCode(): string {
     const r = this.getRandomNumber(2);
-    return r == 0 ? 'EUR' : 'USD';
+    return r == 0 ? "EUR" : "USD";
   }
 }

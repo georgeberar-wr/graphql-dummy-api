@@ -1,9 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from "@nestjs/graphql";
 
-@ObjectType('fundingpayments')
+@ObjectType("fundingpayments")
 export class FundingPayment {
   @Field()
   id: string;
+
+  @Field()
+  version: Number;
 
   @Field()
   correspondent_id: string;
