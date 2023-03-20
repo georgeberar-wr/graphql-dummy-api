@@ -1,4 +1,5 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Extensions, Field, ObjectType } from "@nestjs/graphql";
+import { type } from "os";
 
 @ObjectType("Correspondent")
 export class Correspondent {
@@ -28,4 +29,28 @@ export class CorrespondentBalance {
 
   @Field()
   current: FinancialAmount;
+}
+
+@ObjectType("Metadata")
+class Metadata {
+  @Field()
+  total_items: number;
+
+  @Field()
+  total_pages: number;
+
+  @Field()
+  previous_page: number;
+
+  @Field()
+  next_page: number;
+}
+
+@ObjectType("PaginatedCorrespondentBalance")
+export class PaginatedCorrespondentBalance {
+  @Field((type) => [CorrespondentBalance])
+  balances: CorrespondentBalance[];
+
+  @Field()
+  metadata: Metadata;
 }

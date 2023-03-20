@@ -1,4 +1,4 @@
-import { InputType, Field, Int } from "@nestjs/graphql";
+import { InputType, Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsOptional, Max, Min } from "class-validator";
 
 @InputType()
@@ -7,11 +7,11 @@ export class Pagination {
     defaultValue: 0,
     nullable: true,
     description:
-      "The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.",
+      "The index of the first page to return. Default: 0 (the first item). Use with limit to get the next set of items.",
   })
   @IsOptional()
   @Min(0)
-  offset: number;
+  page: number;
 
   @Field(() => Int, {
     defaultValue: 10,

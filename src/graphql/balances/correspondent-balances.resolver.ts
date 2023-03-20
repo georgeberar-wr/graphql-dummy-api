@@ -1,7 +1,10 @@
 import { Args, Query, Resolver } from "@nestjs/graphql";
 import { uuid } from "uuidv4";
 import { Pagination } from "../common/common.type";
-import { CorrespondentBalance } from "./correspondent-balance.type";
+import {
+  CorrespondentBalance,
+  PaginatedCorrespondentBalance,
+} from "./correspondent-balance.type";
 
 import { uniqueNamesGenerator, names } from "unique-names-generator";
 
@@ -42,12 +45,12 @@ function load() {
 
 load();
 
-@Resolver(() => CorrespondentBalance)
+@Resolver(() => PaginatedCorrespondentBalance)
 export class CorrespondentBalanceResolver {
   constructor() {}
 
-  @Query(() => [CorrespondentBalance], {
-    name: "balances",
+  @Query(() => PaginatedCorrespondentBalance, {
+    name: "getCorrespondentBalances",
   })
   async getCorrespondentBalances(
     @Args("pagination", {
@@ -56,16 +59,23 @@ export class CorrespondentBalanceResolver {
       defaultValue: { offset: 0, limit: 25 },
     })
     pagination: Pagination
-  ): Promise<CorrespondentBalance[]> {
-    const response: CorrespondentBalance[] = [];
+  ): Promise<PaginatedCorrespondentBalance> {
+    const balances: CorrespondentBalance[] = [];
 
-    for (
-      let i = pagination.offset;
-      i < pagination.offset + pagination.limit;
-      i++
-    ) {
-      response.push(BALANCES[i]);
+    for (let i = pagination.page; i < pagination.page + pagination.limit; i++) {
+      balances.push(BALANCES[i]);
     }
+
+    const response: PaginatedCorrespondentBalance = {
+      balances: balances,
+      metadata: {
+        total_items: BALANCES.length,
+        total_pages: BALANCES.length / pagination.limit,
+        next_page:
+          pagination.page + 1 > BALANCES.length ? 0 : pagination.page + 1,
+        previous_page: pagination.page - 1 < 0 ? 0 : pagination.page - 1,
+      },
+    };
 
     return Promise.resolve(response);
   }
