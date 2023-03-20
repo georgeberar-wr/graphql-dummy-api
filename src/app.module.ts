@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
-import { FundingPaymentResolver } from "./graphql/payment/funding-payment.resolver";
 import { CorrespondentBalanceResolver } from "./graphql/balances/correspondent-balances.resolver";
 
 @Module({
@@ -16,6 +15,6 @@ import { CorrespondentBalanceResolver } from "./graphql/balances/correspondent-b
     }),
   ],
   controllers: [],
-  providers: [FundingPaymentResolver, CorrespondentBalanceResolver],
+  providers: [CorrespondentBalanceResolver],
 })
 export class AppModule {}
