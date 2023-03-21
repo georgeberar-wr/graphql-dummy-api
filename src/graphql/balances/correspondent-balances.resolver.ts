@@ -4,6 +4,8 @@ import { Pagination } from "../common/common.type";
 import {
   CorrespondentBalance,
   PaginatedCorrespondentBalance,
+  Sorting,
+  SortingDirection,
 } from "./correspondent-balance.type";
 
 import { uniqueNamesGenerator, names } from "unique-names-generator";
@@ -56,14 +58,30 @@ export class CorrespondentBalanceResolver {
     @Args("pagination", {
       type: () => Pagination,
       nullable: true,
-      defaultValue: { offset: 0, limit: 25 },
+      defaultValue: { page: 0, limit: 25 },
     })
-    pagination: Pagination
+    pagination: Pagination,
+    @Args("sort", {
+      type: () => Sorting,
+      nullable: true,
+      defaultValue: {
+        direction: SortingDirection.ASC,
+      },
+    })
+    sort: Sorting
   ): Promise<PaginatedCorrespondentBalance> {
     const balances: CorrespondentBalance[] = [];
 
     for (let i = pagination.page; i < pagination.page + pagination.limit; i++) {
       balances.push(BALANCES[i]);
+    }
+
+    balances.sort((a, b) =>
+      a.correspondent.name.localeCompare(b.correspondent.name)
+    );
+
+    if (sort.direction === SortingDirection.DESC) {
+      balances.reverse();
     }
 
     const response: PaginatedCorrespondentBalance = {

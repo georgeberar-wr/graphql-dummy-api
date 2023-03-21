@@ -1,4 +1,4 @@
-import { Extensions, Field, ObjectType } from "@nestjs/graphql";
+import { Extensions, Field, InputType, ObjectType } from "@nestjs/graphql";
 import { type } from "os";
 
 @ObjectType("Correspondent")
@@ -53,4 +53,15 @@ export class PaginatedCorrespondentBalance {
 
   @Field()
   metadata: Metadata;
+}
+
+export enum SortingDirection {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+@InputType()
+export class Sorting {
+  @Field()
+  direction: SortingDirection;
 }
