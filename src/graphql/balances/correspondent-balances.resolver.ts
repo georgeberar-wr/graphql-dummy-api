@@ -98,3 +98,21 @@ export class CorrespondentBalanceResolver {
     return Promise.resolve(response);
   }
 }
+
+@Resolver(() => PaginatedCorrespondentBalance)
+export class CorrespondentBalanceV2Resolver {
+  constructor() {}
+
+  @Query(() => [CorrespondentBalance], {
+    name: "correspondentBalances",
+  })
+  async getCorrespondentBalances(): Promise<CorrespondentBalance[]> {
+    const balances: CorrespondentBalance[] = [];
+
+    for (let i = 0; i < BALANCES.length; i++) {
+      balances.push(BALANCES[i]);
+    }
+
+    return Promise.resolve(balances);
+  }
+}
