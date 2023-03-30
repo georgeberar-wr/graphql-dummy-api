@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import { uuid } from "uuidv4";
 import { Pagination } from "../common/common.type";
+import { v4 as uuidv4 } from "uuid";
 import {
   CorrespondentBalance,
   PaginatedCorrespondentBalance,
@@ -26,7 +26,7 @@ function load() {
 
     BALANCES.push({
       correspondent: {
-        id: uuid(),
+        id: uuidv4(),
         name: uniqueNamesGenerator({
           style: "capital",
           dictionaries: [names],
