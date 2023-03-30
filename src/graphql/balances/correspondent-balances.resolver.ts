@@ -4,13 +4,12 @@ import { Pagination } from "../common/common.type";
 import {
   CorrespondentBalance,
   PaginatedCorrespondentBalance,
-  Sorting,
-  SortingDirection,
 } from "./correspondent-balance.type";
 
 import { uniqueNamesGenerator, names } from "unique-names-generator";
 
 const BALANCES: CorrespondentBalance[] = [];
+let TOTAL_PAGES;
 
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
@@ -22,7 +21,7 @@ function getRandomCurrencyCode(): string {
 }
 
 function load() {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 125; i++) {
     const currency = getRandomCurrencyCode();
 
     BALANCES.push({
@@ -34,15 +33,17 @@ function load() {
         }),
       },
       pending: {
-        amount: 10,
+        amount: getRandomNumber(1000),
         currency: currency,
       },
       current: {
-        amount: 100,
+        amount: getRandomNumber(1000),
         currency: currency,
       },
     });
   }
+
+  TOTAL_PAGES = Math.floor(BALANCES.length / 25);
 }
 
 load();
@@ -60,37 +61,20 @@ export class CorrespondentBalanceResolver {
       nullable: true,
       defaultValue: { page: 0, limit: 25 },
     })
-    pagination: Pagination,
-    @Args("sort", {
-      type: () => Sorting,
-      nullable: true,
-      defaultValue: {
-        direction: SortingDirection.ASC,
-      },
-    })
-    sort: Sorting
+    pagination: Pagination
   ): Promise<PaginatedCorrespondentBalance> {
     const balances: CorrespondentBalance[] = [];
 
-    for (let i = pagination.page; i < pagination.page + pagination.limit; i++) {
+    for (let i = pagination.page + 25; i < pagination.page + 50; i++) {
       balances.push(BALANCES[i]);
-    }
-
-    balances.sort((a, b) =>
-      a.correspondent.name.localeCompare(b.correspondent.name)
-    );
-
-    if (sort.direction === SortingDirection.DESC) {
-      balances.reverse();
     }
 
     const response: PaginatedCorrespondentBalance = {
       balances: balances,
       metadata: {
         total_items: BALANCES.length,
-        total_pages: BALANCES.length / pagination.limit,
-        next_page:
-          pagination.page + 1 > BALANCES.length ? 0 : pagination.page + 1,
+        total_pages: TOTAL_PAGES,
+        next_page: pagination.page + 1 > TOTAL_PAGES ? 0 : pagination.page + 1,
         previous_page: pagination.page - 1 < 0 ? 0 : pagination.page - 1,
       },
     };
