@@ -1,5 +1,4 @@
-import { Extensions, Field, InputType, ObjectType } from "@nestjs/graphql";
-import { type } from "os";
+import { Field, InputType, ObjectType } from "@nestjs/graphql";
 
 @ObjectType("Correspondent")
 export class Correspondent {
