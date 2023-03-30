@@ -83,20 +83,20 @@ export class CorrespondentBalanceResolver {
   }
 }
 
-@Resolver(() => PaginatedCorrespondentBalance)
-export class CorrespondentBalanceV2Resolver {
-  constructor() {}
+// @Resolver(() => PaginatedCorrespondentBalance)
+// export class CorrespondentBalanceV2Resolver {
+//   constructor() {}
 
-  @Query(() => [CorrespondentBalance], {
-    name: "correspondentBalances",
-  })
-  async getCorrespondentBalances(): Promise<CorrespondentBalance[]> {
-    const balances: CorrespondentBalance[] = [];
+//   @Query(() => [CorrespondentBalance], {
+//     name: "correspondentBalances",
+//   })
+//   async getCorrespondentBalances(): Promise<CorrespondentBalance[]> {
+//     const balances: CorrespondentBalance[] = [];
 
-    for (let i = 0; i < BALANCES.length; i++) {
-      balances.push(BALANCES[i]);
-    }
+//     for (let i = 0; i < BALANCES.length; i++) {
+//       balances.push(BALANCES[i]);
+//     }
 
-    return Promise.resolve(balances);
-  }
-}
+//     return Promise.resolve(balances);
+//   }
+// }
